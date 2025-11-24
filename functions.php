@@ -461,12 +461,27 @@ add_action('wp_footer', function () {
     /* --- FIX 1: AJAX Prefilter (Fixes 400 Error) --- */
     $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
         if (options.url.indexOf('admin-ajax.php') !== -1 && options.url.indexOf('wc-ajax=') !== -1) {
-            var query = options.url.split('?')[1];
-            options.url = '/?' + query; 
+            var query   = options.url.split('?')[1] || '';
+            var match   = query.match(/(?:^|&)wc-ajax=([^&]+)/i);
+            var endpoint = match && match[1] ? match[1] : '';
+            var rebuilt = endpoint ? wcAjaxUrl(endpoint) : '';
+
+            if (rebuilt) {
+                var tail = query.split('&').filter(function(part){ return part && !/^wc-ajax=/i.test(part); });
+                if (tail.length) {
+                    rebuilt += (rebuilt.indexOf('?') === -1 ? '?' : '&') + tail.join('&');
+                }
+                options.url = rebuilt;
+            }
         }
     });
 
     function wcAjaxUrl(endpoint){
+      var tpl = (window.wc_cart_fragments_params && window.wc_cart_fragments_params.wc_ajax_url)
+             || (window.wc_add_to_cart_params && window.wc_add_to_cart_params.wc_ajax_url)
+             || (window.PP_CFG && window.PP_CFG.wcAjax);
+      if(tpl){ return tpl.replace('%%endpoint%%', endpoint); }
+
       var origin = (location.origin || (location.protocol+"//"+location.host));
       return origin + "/?wc-ajax=" + endpoint;
     }
@@ -666,6 +681,11 @@ add_action('wp_enqueue_scripts', function () {
       "use strict";
       function wcAjaxUrl(endpoint){
         // --- FIXED: Safe URL Generation ---
+        var tpl = (window.wc_cart_fragments_params && window.wc_cart_fragments_params.wc_ajax_url)
+               || (window.wc_add_to_cart_params && window.wc_add_to_cart_params.wc_ajax_url)
+               || (window.PP_CFG && window.PP_CFG.wcAjax);
+        if(tpl){ return tpl.replace('%%endpoint%%', endpoint); }
+
         var origin = (location.origin || (location.protocol+"//"+location.host));
         return origin + "/?wc-ajax=" + endpoint;
       }
