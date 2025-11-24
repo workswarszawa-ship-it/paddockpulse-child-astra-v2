@@ -1,0 +1,380 @@
+/*
+Theme Name: paddockpulse-child-astra-v2
+Template: astra
+Version: 1.0
+*/
+
+/* --- БАЗОВЫЕ СТИЛИ И СЕТКА --- */
+body{margin:0;font-family:'Inter',Arial,sans-serif;background:#f8f9fa;color:#232323}
+a{color:inherit;text-decoration:none;transition:color .18s} a:hover{color:#278afc}
+ul,ol{margin:0;padding:0;list-style:none}
+img{max-width:100%;height:auto;display:block}
+.container,.site-container{width:100%;max-width:1200px;margin:0 auto;padding:0 16px;box-sizing:border-box}
+
+/* --- HEADER (логика не менялась) --- */
+.site-header,header{
+  width:100%;background:#fff;box-shadow:0 1px 8px #f1f5fb69;border-radius:0 0 16px 16px;
+  margin-bottom:28px;position:relative;z-index:20
+}
+
+/* Topbar */
+.topbar{
+  background:#425A63;color:#fff;display:flex;justify-content:space-between;align-items:flex-start;
+  border-bottom:1.5px solid #283a41;min-height:62px;width:100%;padding:0
+}
+
+/* Левый блок контакта — выравнен к левому краю лого */
+.topbar-contact-row{
+  display:flex;align-items:flex-end;min-width:320px;gap:18px;
+  padding:9px 0 9px 20px; /* как у шапки */
+}
+.topbar-contact-left{display:flex;align-items:center;justify-content:center;min-width:34px}
+.topbar-contact-center{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:120px;gap:0}
+.phone-icon svg{width:26px;height:26px;display:block}
+.phone-label{font-size:16px;font-weight:600;color:#fff;margin:2px 0 -2px;line-height:1.1;text-align:center}
+.phone-number{color:#fff;font-size:13.5px;font-weight:500;line-height:1.1;text-align:center}
+.phone-number:hover{color:#a5dcff}
+
+/* Правый край — иконки + инфо-меню */
+.topbar-right{
+  display:flex;align-items:flex-start;justify-content:flex-end;gap:14px;
+  flex:1 1 auto;padding:13px 20px 0 0; /* как у шапки */
+}
+.topbar-socials{display:flex;align-items:flex-end;gap:9px;margin-left:14px;margin-bottom:3px;order:1}
+.social-icon svg{width:26px;height:26px;display:block}.social-icon:hover{opacity:.78}
+
+/* Инфо-меню */
+.topbar-info-menu{position:relative;display:flex;align-items:center;margin:0;padding:0;list-style:none;order:2}
+.topbar-info-menu>.menu-item-info{position:relative}
+.topbar-info-menu>.menu-item-info>a{
+  display:flex;align-items:center;gap:7px;font-size:16px;font-weight:600;color:#fff;
+  padding:7px 18px 7px 12px;border-radius:10px;background:none;cursor:pointer;transition:background .15s,color .15s
+}
+.topbar-info-menu>.menu-item-info>a:hover,
+.topbar-info-menu>.menu-item-info.active>a{background:#3c4e56;color:#fff}
+.topbar-info-menu .sub-menu{
+  display:none;position:absolute;right:0;top:38px;background:#fff;border-radius:13px;
+  box-shadow:0 8px 32px 0 #28353c25,0 1.5px 8px #22292e1a;padding:7px 0;min-width:224px;z-index:99;
+  border:1.5px solid #e3e8ef;animation:infoMenuFadeIn .14s ease
+}
+.topbar-info-menu>.menu-item-info:hover>.sub-menu,
+.topbar-info-menu>.menu-item-info:focus-within>.sub-menu{display:block}
+@keyframes infoMenuFadeIn{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+.topbar-info-menu .sub-menu li a{
+  display:block;color:#273a44;font-size:15px;font-weight:500;padding:8px 24px 8px 32px;border-radius:8px;
+  margin:0 5px;transition:background .13s,color .13s;position:relative;line-height:1.13;min-height:27px;white-space:nowrap
+}
+.topbar-info-menu .sub-menu li a:hover{background:#e6ebef;color:#222f38}
+.topbar-info-menu .sub-menu li a.active,
+.topbar-info-menu .sub-menu li.current-menu-item>a{background:#f4f7fa;color:#1d2226;font-weight:600}
+.topbar-info-menu .sub-menu li a:before{
+  content:'';display:inline-block;width:7px;height:7px;border-right:2px solid #b0b8be;border-bottom:2px solid #b0b8be;
+  transform:rotate(-45deg);margin-right:12px;margin-bottom:1.5px;vertical-align:middle;opacity:.34
+}
+.topbar-info-menu .sub-menu li a:hover:before{border-right:2px solid #4d5d66;border-bottom:2px solid #4d5d66;opacity:.65}
+
+/* Лого/меню (без изменений) */
+.header-inner{display:flex;align-items:center;justify-content:space-between;min-height:78px}
+.header-logo{display:flex;align-items:center;gap:12px;padding:0 10px}
+.header-logo img{height:54px;width:auto}
+.main-nav{flex:1 1 auto;display:flex;align-items:center;justify-content:center;gap:34px}
+.main-nav>ul{display:flex;align-items:center;gap:32px;margin:0;padding:0}
+.main-nav li{position:relative}
+.main-nav li.menu-item-has-children>a:after{content:'▼';font-size:11px;margin-left:6px;color:#aaa;position:relative;top:-1px}
+.main-nav ul ul{
+  display:none;position:absolute;left:0;top:38px;min-width:210px;background:#fff;border:1px solid #e9eef7;border-radius:13px;
+  box-shadow:0 4px 32px #b3d4f828;z-index:50;padding:8px 0
+}
+.main-nav li:hover>ul,.main-nav li:focus-within>ul{display:block}
+.main-nav ul ul li a{padding:8px 18px;font-size:15px;color:#232323;border-radius:8px;display:block}
+.main-nav ul ul li a:hover{background:#f5f8ff;color:#278afc}
+
+/* Кнопки общие */
+.button,.btn{display:inline-block;padding:8px 26px;background:#278afc;color:#fff;border-radius:9px;font-weight:600;font-size:17px;border:none;transition:background .15s;cursor:pointer;box-shadow:0 2px 8px #dbedff29;outline:none}
+.button:hover,.btn:hover{background:#1967be;color:#fff}
+
+/* Footer */
+.site-footer{width:100%;background:#f7f8fa;border-radius:12px 12px 0 0;padding:26px 0 20px 0;color:#888;font-size:15px;box-shadow:0 -1px 7px #e3eaf880;text-align:center}
+
+/* Адаптив шапки */
+@media (max-width:900px){.main-nav>ul{gap:14px}.header-logo img{height:42px}.header-inner{min-height:64px}}
+@media (max-width:600px){
+  .header-inner{flex-direction:column;min-height:34px}
+  .main-nav>ul{gap:10px}
+  .header-logo img{height:32px}
+  .site-footer{font-size:13px;padding:15px 0 13px 0}
+}
+
+/* =========================================================
+   ГЛАВНАЯ: контейнеры и карточки (строго по краям шапки)
+   ========================================================= */
+
+/* Контейнер главной — берет «умные» отступы от шапки */
+.home-section{margin:32px 0}
+.home-section > .ast-container{
+  max-width:var(--ast-container-default-xl,1240px);
+  margin:0 auto;
+  padding-left:var(--pp-left,20px);
+  padding-right:var(--pp-right,20px);
+}
+
+/* Карточки */
+.cards-container{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:24px 0 8px
+}
+.main-category-card{
+  position:relative;height:clamp(260px,31vw,380px);border-radius:18px;overflow:hidden;
+  background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.08);contain:layout paint
+}
+.main-category-card a{display:block;height:100%;position:relative}
+.main-category-card img{width:100%;height:100%;object-fit:cover;display:block;transform:none;transition:transform .25s ease}
+.main-category-card:hover img{transform:scale(1.03)}
+
+/* Чистим лишние элементы внутри ссылки */
+.main-category-card a > *:not(img):not(h3):not(.pp-cta){display:none !important}
+
+/* Градиент для читабельности */
+.main-category-card::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;top:55%;
+  background:linear-gradient(0deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.28) 45%,rgba(0,0,0,0) 100%);
+  pointer-events:none;z-index:0
+}
+
+/* Заголовок и кнопка */
+.main-category-card h3,
+.main-category-card a>h3{
+  position:absolute;left:16px;right:16px;bottom:56px;z-index:2;margin:0;padding:0;background:none!important;
+  color:#fff!important;font-weight:800;font-size:22px;line-height:1.23;
+  text-shadow:0 10px 24px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.30);pointer-events:none
+}
+.main-category-card .pp-cta,
+.main-category-card a>.pp-cta,
+.main-category-card .pp-cta.button,.main-category-card .pp-cta.btn{
+  position:absolute;left:16px;bottom:16px;z-index:2;display:inline-block!important;
+  padding:8px 12px!important;line-height:1!important;border-radius:8px!important;background:transparent!important;
+  color:#fff!important;font-weight:700!important;font-size:13px!important;text-decoration:none!important;
+  border:1.6px solid rgba(255,255,255,.96)!important;box-shadow:0 1px 6px rgba(0,0,0,.12)!important;pointer-events:auto
+}
+.main-category-card .pp-cta:hover{background:rgba(255,255,255,.08)!important}
+
+/* Блок преимуществ */
+.info-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:28px 0 6px}
+.info-item{
+  display:flex;flex-direction:column;align-items:center;text-align:center;background:#fff;border:1px solid #e9eef3;
+  border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.04)
+}
+.info-item img{width:64px;height:64px;object-fit:contain;margin-bottom:12px}
+.info-item h3{margin:0 0 6px;font-size:18px;font-weight:700}
+.info-item p{margin:0;color:#4a5568}
+
+/* «Одежда» */
+.clo-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.clo-card{position:relative;height:300px;border-radius:8px;overflow:hidden;display:block;color:#fff;background:#2f2f2f}
+.clo-card::before{content:"";position:absolute;inset:0;background-image:var(--bg);background-size:cover;background-position:center}
+.clo-card::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(52,56,48,.85) 0%,rgba(52,56,48,.70) 38%,rgba(52,56,48,0) 70%)}
+.clo-left{position:absolute;left:36px;top:50%;transform:translateY(-50%);z-index:2;width:40%}
+.clo-left h3{margin:0 0 14px;font-size:22px;line-height:1.25;color:#fff}
+.clo-btn{display:inline-block;padding:9px 18px;border-radius:6px;border:1px solid rgba(255,255,255,.9);color:#fff;background:transparent;font-weight:600;font-size:14px}
+.clo-btn:hover{background:rgba(255,255,255,.08)}
+
+/* Витрины (5 в ряд) */
+.home-new ul.products,.home-recommended ul.products,.home-sale ul.products{
+  display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin:0!important
+}
+.home-new ul.products li.product,.home-recommended ul.products li.product,.home-sale ul.products li.product{
+  width:auto!important;margin:0!important;background:#fff;border:1px solid #e9eef3;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);padding:14px
+}
+
+/* Адаптив */
+@media (max-width:1024px){
+  .cards-container{grid-template-columns:repeat(2,1fr)}
+  .main-category-card{height:300px}
+  .info-row{grid-template-columns:1fr}
+  .home-new ul.products,.home-recommended ul.products,.home-sale ul.products{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:640px){
+  .cards-container{grid-template-columns:1fr}
+  .main-category-card{height:240px}
+  .clo-row{grid-template-columns:1fr}
+  .home-new ul.products,.home-recommended ul.products,.home-sale ul.products{grid-template-columns:repeat(2,1fr)}
+}
+/* ====== HOME: тянуть контент точно от логотипа до правых иконок ====== */
+:root{
+  --pp-left:16px;   /* значения по умолчанию, JS заменит точными */
+  --pp-right:16px;
+}
+
+/* растягиваем ВСЕ блоки главной как у шапки (без 100vw) */
+.home .home-section > .ast-container{
+  max-width: none;
+  margin: 0;
+  padding-left: var(--pp-left);
+  padding-right: var(--pp-right);
+}
+
+/* ====== Верхние карточки: крупнее и по краям шапки ====== */
+.home .cards-container{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin: 24px 0 8px;
+}
+.home .main-category-card{
+  position:relative;
+  height: clamp(300px, 34vw, 420px);  /* стало выше/крупнее без «рысканья» */
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(0,0,0,.08);
+  contain: layout paint;
+}
+.home .main-category-card a{ display:block; height:100%; position:relative; }
+.home .main-category-card img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  transform:none; transition: transform .25s ease;
+}
+.home .main-category-card:hover img{ transform: scale(1.03); }
+
+/* читаемый заголовок + кнопка «В магазин» как раньше */
+.home .main-category-card h3,
+.home .main-category-card a > h3{
+  position:absolute; left:16px; right:16px; bottom:56px; z-index:2;
+  margin:0; color:#fff; font-weight:800; font-size:22px; line-height:1.23;
+  text-shadow:0 10px 24px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.30);
+  pointer-events:none;
+}
+.home .main-category-card .pp-cta,
+.home .main-category-card a > .pp-cta{
+  position:absolute; left:16px; bottom:16px; z-index:2;
+  display:inline-block; padding:8px 12px; line-height:1;
+  border-radius:8px; background:transparent !important;
+  color:#fff; font-weight:700; font-size:13px; text-decoration:none;
+  border:1.6px solid rgba(255,255,255,.96);
+  box-shadow:0 1px 6px rgba(0,0,0,.12);
+}
+
+/* мягкий градиент снизу — для контраста текста */
+.home .main-category-card::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; top:55%;
+  background:linear-gradient(0deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.28) 45%, rgba(0,0,0,0) 100%);
+  pointer-events:none; z-index:0;
+}
+
+/* ====== Блок «Одежда»: шире, но немного ниже ====== */
+.home .clo-row{
+  display:grid; grid-template-columns:repeat(3, minmax(0,1fr));
+  gap: 20px;
+}
+.home .clo-card{
+  position:relative;
+  height: clamp(190px, 19vw, 235px); /* ↓ чуть ниже, как просили */
+  border-radius: 12px;
+  overflow:hidden; display:block;
+  color:#fff; background:#2f2f2f;
+}
+.home .clo-card::before{ content:""; position:absolute; inset:0; background-image:var(--bg); background-size:cover; background-position:center; }
+.home .clo-card::after{ content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(52,56,48,.85) 0%, rgba(52,56,48,.70) 40%, rgba(52,56,48,0) 70%); }
+.home .clo-left{ position:absolute; left:32px; top:68%; transform:translateY(-50%); z-index:2; width:42%; }
+.home .clo-left h3{ margin:0 0 10px; font-size:21px; line-height:1.25; color:#fff; }
+.home .clo-btn{ display:inline-block; padding:8px 16px; border-radius:6px; border:1px solid rgba(255,255,255,.9); color:#fff; background:transparent; font-weight:600; font-size:13px; }
+
+/* адаптив как раньше */
+@media (max-width:1024px){
+  .home .cards-container{ grid-template-columns: repeat(2,1fr); }
+  .home .main-category-card{ height: 300px; }
+  .home .clo-row{ grid-template-columns: 1fr; }
+}
+@media (max-width:640px){
+  .home .cards-container{ grid-template-columns: 1fr; }
+  .home .main-category-card{ height: 240px; }
+}
+
+
+/* === PDP unified rails — ОДИНАКОВЫЕ КРАЯ И КАРТОЧКИ (чистая версия) === */
+:root{
+  /* подстрой при желании на ±2–4px */
+  --pdp-rail-left: 52px;   /* левее к галерее */
+  --pdp-rail-right: 22px;  /* общий правый край summary */
+}
+
+/* Вкладки (Усе про товар / Характеристики …) на те же рельсы */
+.single-product .woocommerce-tabs ul.tabs{
+  padding-left: var(--pdp-rail-left);
+  padding-right: var(--pdp-rail-right);
+  box-sizing: border-box;
+}
+
+/* Карточки справа: название, продавец, цена, кнопки, мета */
+.single-product div.product .summary.entry-summary > h1.product_title,
+.single-product div.product .summary.entry-summary > .pp-seller-row,
+.single-product div.product .summary.entry-summary > p:has(img),
+.single-product div.product .summary.entry-summary > .price,
+.single-product div.product .summary.entry-summary > form.cart,
+.single-product div.product .summary.entry-summary > .product_meta{
+  margin-left: calc(-1 * var(--pdp-rail-left)) !important;
+  width: calc(100% + var(--pdp-rail-left) + var(--pdp-rail-right)) !important;
+  padding: 14px 18px !important;
+  border: 1px solid #e8edf5 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-sizing: border-box !important;
+}
+
+/* Заголовок сверху без лишнего отступа */
+.single-product div.product .summary.entry-summary > h1.product_title{
+  margin-top: 0 !important;
+}
+
+/* Продавець — горизонтально (иконка + текст) */
+.single-product div.product .summary.entry-summary > .pp-seller-row,
+.single-product div.product .summary.entry-summary > p:has(img){
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 48px !important;
+}
+.single-product div.product .summary.entry-summary > .pp-seller-row img,
+.single-product div.product .summary.entry-summary > p:has(img) img{
+  width: 28px; height: 28px; object-fit: contain; border-radius: 6px; display:block;
+}
+
+/* Цена/кнопки красиво в линию (с переносом при нехватке места) */
+.single-product div.product .summary.entry-summary > .price{
+  display: flex !important; align-items: baseline !important; gap: 10px !important;
+}
+.single-product div.product .summary.entry-summary > form.cart{
+  display: flex !important; align-items: center !important; gap: 12px !important; flex-wrap: wrap !important;
+}
+.single-product div.product .summary.entry-summary > .product_meta{
+  display:flex !important; align-items:center !important; gap:10px !important; flex-wrap:wrap !important;
+}
+
+/* Ровные промежутки между карточками */
+.single-product div.product .summary.entry-summary
+  > *:where(h1.product_title,.pp-seller-row,.price,form.cart,.product_meta) + *{
+  margin-top: 12px !important;
+}
+
+/* Цвета цены (без <style> в CSS-файле) */
+.single-product .summary .price del,
+.single-product .summary .price del *{
+  color:#e11d48 !important; opacity:1 !important; text-decoration:line-through !important;
+}
+.single-product .summary .price ins,
+.single-product .summary .price ins *,
+.single-product .summary .price > .woocommerce-Price-amount{
+  color:#0f766e !important; font-weight:700 !important; text-decoration:none !important;
+}
+
+/* Мобилка — рельсы выключаем, карточки на всю ширину */
+@media (max-width: 992px){
+  .single-product .woocommerce-tabs ul.tabs{ padding-left:0; padding-right:0; }
+  .single-product div.product .summary.entry-summary > h1.product_title,
+  .single-product div.product .summary.entry-summary > .pp-seller-row,
+  .single-product div.product .summary.entry-summary > p:has(img),
+  .single-product div.product .summary.entry-summary > .price,
+  .single-product div.product .summary.entry-summary > form.cart,
+  .single-product div.product .summary.entry-summary > .product_meta{
+    margin-left:0 !important; width:100% !important;
+  }
+}

@@ -1,0 +1,248 @@
+/* ===== PaddockPulse — Cart Modal UI v2.4.1 (final) ===== */
+
+.pp-cart-overlay[hidden], .pp-cart-modal[hidden]{display:none!important;}
+.pp-cart-overlay{position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:9997;opacity:0;transition:opacity .12s}
+.pp-cart-overlay.is-visible{opacity:1}
+.pp-cart-modal{position:fixed;inset:0;display:grid;place-items:center;z-index:9998}
+
+/* Чёрная окантовка модалки */
+.pp-cart-modal__inner{
+  width:min(880px,94vw);max-height:calc(100vh - 80px);
+  background:#fff;border:1px solid #111827!important;
+  border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,.25);
+  transform:translateY(16px);opacity:0;transition:transform .12s,opacity .12s;
+  position:relative;overflow:hidden;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+}
+.pp-cart-modal.is-visible .pp-cart-modal__inner{transform:none;opacity:1}
+@supports(overflow:clip){.pp-cart-modal__inner{overflow:clip}}
+
+/* header */
+.pp-cart-header{display:flex;align-items:center;gap:12px;padding:14px 18px 10px;border-bottom:1px solid #e2e8f0;padding-right:64px}
+.pp-cart-header__left{display:flex;align-items:center;gap:10px}
+#pp-cart-title{margin:0;font-size:18px;font-weight:700;color:#111827}
+.pp-cart-header__right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.pp-cart-header__actions{position:absolute;right:56px;top:10px;display:flex;gap:8px;z-index:5}
+
+/* «Удалить выбранные» — SVG + CSS-фоллбек */
+#pp-cart-modal .ppc-delete-selected{
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border:1px solid #e5e7eb!important;border-radius:10px;background:#fff!important;color:#0f172a!important;
+  box-shadow:0 1px 2px rgba(0,0,0,.05);cursor:pointer;position:relative;
+}
+#pp-cart-modal .ppc-delete-selected:hover{background-color:#f8fafc!important}
+#pp-cart-modal .ppc-delete-selected svg{width:18px;height:18px;display:block;stroke:#111827!important}
+/* fallback, если тема сотрёт innerHTML */
+#pp-cart-modal .ppc-delete-selected::before{
+  content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;pointer-events:none;
+  background-position:center;background-repeat:no-repeat;background-size:18px 18px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111827' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 6 5 6 21 6'/%3E%3Cpath d='M19 6l-1 14H6L5 6m3 0l1-2h6l1 2'/%3E%3Cline x1='10' y1='11' x2='10' y2='17'/%3E%3Cline x1='14' y1='11' x2='14' y2='17'/%3E%3C/svg%3E");
+}
+
+.pp-cart-body{padding:10px 16px 0;max-height:480px;overflow:auto}
+.pp-cart-reco[hidden]{display:none!important}
+
+/* список */
+.pp-cart-list{list-style:none;margin:0;padding:0}
+
+/* Ровная сетка: отдельная фикс-колонка под qty (всегда центр) */
+.ppc-row{
+  display:grid;
+  grid-template-columns:28px 56px 1fr 210px minmax(200px,260px);
+  gap:12px;align-items:center;padding:12px 8px;border-bottom:1px solid #e2e8f0;
+}
+.ppc-row:last-child{border-bottom:0}
+.ppc-select{display:flex;justify-content:center}
+.ppc-thumb img{width:56px;height:56px;object-fit:contain;border-radius:8px;background:#fff;display:block}
+.ppc-title{display:inline-block;margin-bottom:4px;font-weight:600;color:#0f172a;text-decoration:none}
+.pp-attrs{font-size:12px;color:#475569}
+
+/* qty — строго по центру своей колонки, независим от длины названия */
+.ppc-qty{
+  justify-self:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  min-width:156px;
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid #cbd5e1;border-radius:10px;padding:2px 6px;background:#fff;
+  box-sizing:border-box;
+}
+.ppc-qty > *{flex:0 0 auto}
+.ppc-qty-btn{
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;font-weight:600;line-height:1
+}
+.ppc-qty-btn:hover{background:#e2e8f0}
+.ppc-qty-input{
+  width:48px;text-align:center;border:0;outline:none;background:#fff;color:#0f172a;font-weight:600
+}
+.ppc-qty-input::-webkit-outer-spin-button,.ppc-qty-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ppc-qty-input[type=number]{-moz-appearance:textfield}
+.ppq-lock .ppc-qty-btn{pointer-events:none;opacity:.6}
+
+/* цена + удалить */
+.ppc-line{display:flex;align-items:center;justify-content:flex-end;gap:10px;white-space:nowrap;min-width:180px;position:relative;z-index:1}
+.ppc-line .ppc-line-val{flex:0 1 auto;white-space:nowrap}
+.ppc-delete{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:36px;height:36px;padding:0;border-radius:10px;border:1px solid #e5e7eb;background:#fff;color:#0f172a;cursor:pointer
+}
+.ppc-delete:hover{background:#f8fafc}
+.ppc-delete>*{display:block}
+
+/* рекомендации */
+.pp-cart-reco{margin-top:12px}
+.pp-cart-reco__head{padding:6px 0 10px}
+.pp-cart-reco__title{margin:0;font-size:15px;font-weight:700;color:#111827}
+#pp-cart-reco-row{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+#pp-cart-reco-row::-webkit-scrollbar{height:8px}
+#pp-cart-reco-row::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:6px}
+.pp-reco-card{flex:0 0 200px;display:block;padding:10px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;text-decoration:none;color:#0f172a}
+.pp-reco-card__img{width:100%;height:120px;object-fit:contain;display:block}
+.pp-reco-card__title{font-size:14px;margin:6px 0;line-height:1.25;height:36px;overflow:hidden}
+.pp-reco-card__price{font-weight:600}
+
+/* footer */
+.pp-cart-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid #e2e8f0;background:#fff}
+.pp-cart-footer__subtotal{display:flex;align-items:center;gap:8px;font-size:16px}
+.pp-cart-subtotal__label{color:#6b7280}
+.pp-cart-subtotal__value{color:#111827;font-weight:800}
+.pp-cart-footer__actions{display:flex;gap:10px;flex-wrap:wrap}
+
+#pp-btn-go-cart,#pp-btn-checkout,#pp-btn-continue{
+  display:inline-flex!important;align-items:center;justify-content:center;height:40px!important;padding:0 14px!important;border-radius:10px!important;
+  font-size:14px!important;font-weight:700!important;line-height:1!important;white-space:nowrap!important;border:1px solid #e5e7eb!important;text-decoration:none!important;min-width:210px!important;
+}
+#pp-btn-go-cart,#pp-btn-continue{background:#fff!important;color:#111827!important}
+#pp-btn-go-cart:hover,#pp-btn-continue:hover{background:#f3f4f6!important}
+#pp-btn-checkout{background:#00a046!important;color:#fff!important;border-color:#00a046!important}
+#pp-btn-checkout:hover{filter:brightness(.96)}
+
+#pp-cart-modal a.is-disabled{opacity:.5;pointer-events:none}
+#pp-cart-modal .woocommerce-mini-cart__buttons,
+#pp-cart-modal .widget_shopping_cart .buttons,
+#pp-cart-modal .widget_shopping_cart,
+#pp-cart-modal .woocommerce-mini-cart{display:none!important}
+#pp-modal-cart,#pp-modal-wishlist{display:none!important;visibility:hidden!important;opacity:0!important}
+
+/* mobile */
+@media (max-width:680px){
+  .pp-cart-modal__inner{width:min(520px,96vw);border-radius:12px}
+  .ppc-row{grid-template-columns:24px 54px 1fr;grid-template-rows:auto auto auto;gap:10px}
+  .ppc-info{grid-column:3/4}
+  .ppc-qty{grid-column:3/4;justify-self:center;min-width:0;margin-left:auto;margin-right:auto}
+  .ppc-line{grid-column:3/4;justify-self:start}
+  .ppc-delete{grid-column:3/4;justify-self:end}
+}
+/* ===== FIX: qty строго по центру строки ===== */
+
+/* Жёстко задаём сетку строки: 5 колонок, у qty своя фиксированная полоса */
+#pp-cart-modal .ppc-row{
+  display: grid !important;
+  grid-template-columns: 28px 56px minmax(0,1fr) 210px 200px !important;
+  align-items: center !important;
+}
+
+/* Разрешаем тексту названия сжиматься, чтобы колонка не выталкивала qty */
+#pp-cart-modal .ppc-info{ min-width:0 !important; }
+
+/* Колонка с ценой — фиксированная справа */
+#pp-cart-modal .ppc-line{
+  min-width: 200px !important;
+  justify-self: end !important;
+}
+
+/* Сам блок qty — ровно по центру своей колонки */
+#pp-cart-modal .ppc-qty{
+  justify-self: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  min-width: 156px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 10px !important;
+  padding: 2px 6px !important;
+  background: #fff !important;
+  box-sizing: border-box !important;
+}
+#pp-cart-modal .ppc-qty > *{ flex:0 0 auto !important; }
+
+/* Кнопки и инпут — без сюрпризов */
+#pp-cart-modal .ppc-qty-btn{
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;font-weight:600;line-height:1;
+}
+#pp-cart-modal .ppc-qty-input{
+  width:48px;text-align:center;border:0;outline:none;background:#fff;color:#0f172a;font-weight:600;
+}
+/* === PP Cart — qty строго по центру (финал) === */
+
+/* Сетка строки: отдельная полоса под qty + фикс правая колонка цены */
+#pp-cart-modal .ppc-row{
+  display:grid !important;
+  grid-template-columns: 28px 56px minmax(0,1fr) 210px 200px !important;
+  align-items:center !important;
+}
+
+/* Название может сжиматься, чтобы не выталкивать соседние колонки */
+#pp-cart-modal .ppc-info{ min-width:0 !important; }
+
+/* Правая колонка (цена/удалить) фикс и прижата вправо */
+#pp-cart-modal .ppc-line{
+  min-width:200px !important;
+  justify-self:end !important;
+}
+
+/* Сам блок qty — идеально по центру своей колонки */
+#pp-cart-modal .ppc-qty{
+  justify-self:center !important;          /* центр в сетке */
+  margin-left:auto !important;
+  margin-right:auto !important;
+  min-width:156px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+  border:1px solid #cbd5e1 !important;
+  border-radius:10px !important;
+  padding:2px 6px !important;
+  background:#fff !important;
+  box-sizing:border-box !important;
+}
+#pp-cart-modal .ppc-qty > *{ flex:0 0 auto !important; }
+
+/* Кнопки и инпут — стабильные размеры */
+#pp-cart-modal .ppc-qty-btn{
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  border:1px solid #cbd5e1;border-radius:8px;background:#f1f5f9;color:#0f172a;font-weight:600;line-height:1;
+}
+#pp-cart-modal .ppc-qty-btn:hover{ background:#e2e8f0; }
+#pp-cart-modal .ppc-qty-input{
+  width:48px;text-align:center;border:0;outline:none;background:#fff;color:#0f172a;font-weight:600;
+}
+
+/* Мобильный режим — прежняя раскладка */
+@media (max-width:680px){
+  #pp-cart-modal .ppc-row{
+    grid-template-columns:24px 54px 1fr !important;
+    grid-template-rows:auto auto auto !important;
+  }
+  #pp-cart-modal .ppc-qty{ grid-column:3/4 !important; }
+  #pp-cart-modal .ppc-line{ grid-column:3/4 !important; justify-self:start !important; }
+}
+/* Cart header: без огромной галки, вместо неё маленький логотип */
+#pp-cart-modal .pp-cart-check { display:none !important; }
+
+#pp-cart-modal .pp-cart-header__left {
+  gap:10px;
+  position:relative;
+  padding-left:40px; /* место под лого */
+}
+#pp-cart-modal .pp-cart-header__left::before{
+  content:"";
+  position:absolute; left:0; top:50%; transform:translateY(-50%);
+  width:28px; height:28px; border-radius:6px;
+  background: url('?>/images/logo.webp') no-repeat center/contain; /* <-- ПОМЕНЯЙ ПУТЬ */
+  opacity:.95;
+}
+#pp-cart-modal #pp-cart-title { font-weight:700; font-size:16px; }

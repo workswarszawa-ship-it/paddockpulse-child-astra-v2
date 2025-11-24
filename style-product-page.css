@@ -1,0 +1,247 @@
+:root{
+  --pp-accent:#278afc;
+  --pp-text:#2e3136;
+  --pp-muted:#8993a4;
+  --pp-ring:#e6e8ec;
+  --pp-chip:#f6f8fc;
+  --pp-success:#00b517;
+  --pp-danger:#e53935;
+}
+
+/* ===== LAYOUT ===== */
+.pp-single.wrap{max-width:1140px;margin:0 auto;padding:24px 20px}
+.pp-single__top{display:flex;gap:36px;align-items:flex-start}
+@media (max-width:992px){.pp-single__top{flex-direction:column;gap:24px}}
+
+/* ===== GALLERY ===== */
+.pp-rz-grid{display:flex;flex-direction:column;gap:12px}
+.pp-rz-main{position:relative;height:560px;border:1px solid var(--pp-ring);border-radius:12px;background:#fff;overflow:hidden}
+.pp-rz-main .swiper-wrapper,.pp-rz-main .swiper-slide{height:100%}
+.pp-rz-main .swiper-slide{display:none;align-items:center;justify-content:center;position:relative}
+.pp-rz-main .swiper-slide.is-active{display:flex}
+.pp-rz-zoom{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pp-rz-main img{width:auto!important;height:auto!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;will-change:transform,transform-origin}
+.pp-rz-prev,.pp-rz-next{
+  position:absolute;top:50%;margin-top:-22px;width:44px;height:44px;border-radius:50%;background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);z-index:9;cursor:pointer
+}
+.pp-rz-prev{left:12px}
+.pp-rz-next{right:12px}
+.pp-rz-prev:after,.pp-rz-next:after{content:"";display:block;width:10px;height:10px;border-top:2px solid #333;border-right:2px solid #333;margin:16px auto 0}
+.pp-rz-prev:after{transform:rotate(225deg)}
+.pp-rz-next:after{transform:rotate(45deg)}
+.pp-rz-main .is-zooming{cursor:zoom-out}
+.pp-rz-main .pp-rz-zoom{cursor:zoom-in}
+
+/* THUMBS */
+.pp-rz-thumbs .swiper-wrapper{display:flex;gap:8px}
+.pp-rz-thumbs .swiper-slide{flex:0 0 92px;width:92px;height:86px;border:1px solid var(--pp-ring);border-radius:10px;overflow:hidden;background:#fafcff;opacity:.85;cursor:pointer}
+.pp-rz-thumbs .swiper-slide-thumb-active{opacity:1;border-color:var(--pp-accent)}
+.pp-rz-thumb{width:100%;height:100%;object-fit:cover;background:#fff;display:block}
+@media (max-width:767px){.pp-rz-main{height:360px}.pp-rz-thumbs .swiper-slide{flex-basis:86px;width:86px;height:74px}}
+
+/* ===== RIGHT: title/meta/price ===== */
+.pp-title{font-size:30px;font-weight:800;margin:0 0 8px}
+.pp-taxline{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 2px}
+.pp-tax{color:var(--pp-text);font-size:14px}
+.pp-tax>span{color:var(--pp-muted);margin-right:6px;font-weight:700}
+.pp-tax a{color:var(--pp-accent);text-decoration:none}
+.pp-tax a:hover{text-decoration:underline}
+
+.pp-meta{display:flex;gap:14px;align-items:center;margin:8px 0 10px}
+.pp-sku>span{color:var(--pp-muted);margin-right:6px}
+.pp-stock{padding:4px 10px;border-radius:999px;font-weight:800}
+.pp-stock.in{background:#e9f8ee;color:var(--pp-success)}
+.pp-stock.out{background:#feecec;color:var(--pp-danger)}
+
+.pp-price-row .price{display:flex;gap:12px;align-items:baseline}
+.pp-price-row .price del{color:var(--pp-danger)!important;text-decoration:line-through}
+.pp-price-row .price ins{color:var(--pp-success)!important;text-decoration:none;font-weight:800}
+
+/* ===== ATTRIBUTES (chips + swatches) ===== */
+.pp-attrs{display:flex;flex-direction:column;gap:14px;margin:12px 0}
+.pp-attr{display:flex;flex-direction:column;gap:8px}
+.pp-attr__label{font-weight:800;color:var(--pp-text)}
+.pp-choices{display:flex;gap:8px;flex-wrap:wrap}
+
+.pp-chip{
+  background:var(--pp-chip);border:1px solid var(--pp-ring);color:var(--pp-text);
+  border-radius:12px;height:34px;padding:0 14px;display:inline-flex;align-items:center;justify-content:center;
+  font-weight:700;transition:.15s
+}
+.pp-chip.is-active,.pp-chip:hover{border-color:var(--pp-accent);box-shadow:0 0 0 2px rgba(39,138,252,.12)}
+
+.pp-swatch.pp-swatch--color{
+  width:32px;height:32px;border-radius:50%;border:1px solid var(--pp-ring);background:#fff;position:relative;transition:.15s
+}
+.pp-swatch.pp-swatch--color .dot{position:absolute;inset:4px;border-radius:50%;background:var(--swatch,#e9eef5);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.pp-swatch.pp-swatch--color.is-active{outline:2px solid var(--pp-accent);outline-offset:2px}
+
+/* Выбранные вариации */
+.pp-selected{margin:8px 0 2px}
+.pp-selected ul{display:flex;gap:10px;flex-wrap:wrap;padding:0;margin:0;list-style:none}
+.pp-selected li{background:#f6f8fc;border:1px solid var(--pp-ring);border-radius:999px;padding:4px 10px;font-size:13px}
+
+/* ===== QTY + ADD TO CART ===== */
+.pp-atc{display:flex;gap:12px;align-items:center;margin:14px 0 12px}
+.pp-qty-wrap{position:relative}
+.pp-qty-wrap .qty{width:92px;height:44px;border:1px solid var(--pp-ring);border-radius:10px;text-align:center;font-weight:700;padding:0 36px;background:#fff}
+.pp-qty-btn{position:absolute;top:0;width:36px;height:44px;border:0;background:#f5f7fb;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#4a4f55}
+.pp-qty-btn.minus{left:0;border-radius:10px 0 0 10px}
+.pp-qty-btn.plus{right:0;border-radius:0 10px 10px 0}
+.pp-qty-btn:hover{background:#eaeef7}
+.single_variation_wrap.pp-atc-row{display:flex;align-items:center;gap:12px;margin-top:8px}
+.single_add_to_cart_button{background:#2e3136;color:#fff;border:0;min-width:220px;height:46px;padding:0 22px;border-radius:12px;font-weight:800;letter-spacing:.2px;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.single_add_to_cart_button:hover{opacity:.95;transform:translateY(-1px)}
+
+/* ===== Wishlist fallback ===== */
+.pp-like{height:42px;padding:0 16px;border-radius:10px;border:1px solid var(--pp-ring);background:#fff;font-weight:700;cursor:pointer}
+.pp-like[aria-pressed="true"]{background:#fff1f2;border-color:#fecdd3;color:#e11d48}
+
+/* ===== NOVA POSHTA ===== */
+.pp-np-pop{position:relative;margin:10px 0 4px}
+.pp-np-trigger{
+  display:inline-flex;align-items:center;gap:10px;height:44px;padding:10px 14px;border-radius:12px;
+  border:1px solid #f6cfd1;background:#fff7f7;color:#c8171e;font-weight:800;cursor:pointer
+}
+.pp-np-logo{
+  width:18px;height:18px;display:inline-block;background:#c8171e;
+  -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23000" d="M12 0l5 5-5 5-5-5 5-5zm0 9l5 5-5 5-5-5 5-5z"/></svg>') center/contain no-repeat;
+          mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23000" d="M12 0l5 5-5 5-5-5 5-5zm0 9l5 5-5 5-5-5 5-5z"/></svg>') center/contain no-repeat;
+}
+.pp-np-chip{margin-left:6px;padding:2px 8px;border-radius:999px;background:#ffe7e8;border:1px solid #f6cfd1;font-size:12px;color:#c8171e}
+
+.pp-np-modal{
+  position:absolute;top:calc(100% + 12px);left:0;width:420px;max-width:92vw;background:#fff;border:1px solid var(--pp-ring);
+  border-radius:14px;box-shadow:0 18px 40px rgba(25,35,58,.16);padding:14px;opacity:0;pointer-events:none;transform:translateY(6px);transition:.18s ease;z-index:70
+}
+.pp-np-pop.is-open .pp-np-modal{opacity:1;pointer-events:auto;transform:translateY(0)}
+.pp-np-modal:before{content:"";position:absolute;top:-8px;left:20px;width:14px;height:14px;background:#fff;border-left:1px solid var(--pp-ring);border-top:1px solid var(--pp-ring);transform:rotate(45deg)}
+.pp-np-close{position:absolute;top:8px;right:8px;width:28px;height:28px;border:0;border-radius:8px;background:#f4f6fb;color:#4a4f55;font-weight:800;cursor:pointer}
+.pp-np-close:hover{background:#eaeef7}
+.pp-np-form .pp-np-row{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.pp-np-form input,.pp-np-form select{height:42px;border:1px solid var(--pp-ring);border-radius:10px;padding:8px 10px;background:#fff}
+.pp-np-go{margin-top:6px;height:42px;border-radius:10px;border:0;background:#278afc;color:#fff;font-weight:800;cursor:pointer;width:100%}
+/* ===== PDP rails (единые «рельсы» справа) — v4 ===== */
+:root{
+  --pdp-rail-left: 52px;   /* подвинуть ближе/дальше к галерее */
+  --pdp-rail-right: 22px;  /* общий правый край правой колонки */
+}
+
+/* вкладки на те же рельсы */
+.single-product .woocommerce-tabs .wc-tabs,
+.single-product .woocommerce-tabs ul.tabs{
+  padding-left: var(--pdp-rail-left) !important;
+  padding-right: var(--pdp-rail-right) !important;
+  box-sizing: border-box !important;
+}
+
+/* карточки справа: заголовок, продавец, цена, корзина, мета */
+.single-product div.product .summary.entry-summary
+  :is(h1.product_title,.pp-seller-row,.price,form.cart,.product_meta,p.pp-seller,p:has(>img)){
+  margin-left: calc(-1 * var(--pdp-rail-left)) !important;
+  width: calc(100% + var(--pdp-rail-left) + var(--pdp-rail-right)) !important;
+  padding: 14px 18px !important;
+  border: 1px solid #e8edf5 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-sizing: border-box !important;
+}
+
+/* небольшие зазоры между карточками */
+.single-product div.product .summary.entry-summary
+  :is(h1.product_title,.pp-seller-row,.price,form.cart,.product_meta,p.pp-seller,p:has(>img))
+  + :is(h1.product_title,.pp-seller-row,.price,form.cart,.product_meta,p.pp-seller,p:has(>img)){
+  margin-top: 12px !important;
+}
+
+/* продавец — горизонтально, иконка + текст */
+.single-product div.product .summary.entry-summary :is(.pp-seller-row,p.pp-seller,p:has(>img)){
+  display:flex !important; align-items:center !important; gap:12px !important; min-height:48px;
+}
+.single-product div.product .summary.entry-summary :is(.pp-seller-row,p.pp-seller,p:has(>img)) img{
+  width:28px; height:28px; object-fit:contain; border-radius:6px; display:block;
+}
+
+/* цена + кнопки — ровный ряд с переносом при нехватке места */
+.single-product div.product .summary.entry-summary .price{
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.single-product div.product .summary.entry-summary form.cart{
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+}
+
+/* чуть уменьшить «просвет» между галереей и колонкой справа, если нужно */
+.pp-single__top{ gap:24px !important; }  /* раньше у тебя было 36px */
+
+
+/* === PDP layout align v1 — отступ от галереи ~1.5 см и ровняем правый край === */
+
+/* Контейнер товара в две колонки: галерея + правая «карточка» (заголовок, цена и т.д.) */
+.single-product div.product{
+  display: grid;
+  grid-template-columns: minmax(520px, 1fr) minmax(420px, 560px);
+  /* 1.5 см ≈ 56–60px. Делаем адаптивно: минимум 40, целимся в 1.5cm, максимум 72 */
+  column-gap: clamp(40px, 1.5cm, 72px);
+  align-items: start;
+}
+
+/* Левая колонка — твоя галерея ppg (и на всякий случай стандартные селекторы Woo) */
+.single-product div.product .ppg,
+.single-product div.product .images,
+.single-product div.product .woocommerce-product-gallery { grid-column: 1; margin: 0; }
+
+/* Правая колонка — блок с названием/ценой/кнопками */
+.single-product div.product .summary.entry-summary{ 
+  grid-column: 2;
+  max-width: 560px;            /* фиксируем, чтобы правый край ровнялся под иконки в шапке */
+  margin-right: 0;
+}
+
+/* Выравниваем правый край всей страницы под иконки хедера (совпадение внутренних отступов) */
+.single-product .ast-woocommerce-container,
+.single-product .site-content .ast-container{
+  padding-inline: -60px;        /* как в хедере; при желании подстрой тут 20–32px */
+}
+
+/* SKU/продавец внизу — подсобираем вправо внутри правой колонки */
+.single-product div.product .summary .product_meta{
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;        /* текст меты ровно по правому краю */
+  text-align: right;
+}
+
+/* Чуть компактнее отступы внутри правой колонки, чтобы визуально совпасть с иконками */
+.single-product div.product .summary > *{ 
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Знайдіть медіа-запит для десктопів (min-width: 922px) і вставте/замініть це: */
+
+@media (min-width: 922px) {
+    /* Галерея зліва */
+    .woocommerce #content div.product div.images,
+    .woocommerce div.product div.images {
+        width: 40% !important; /* Було 50% */
+        float: left !important;
+        margin-right: 0 !important;
+    }
+
+    /* Текст справа + відступ */
+    .woocommerce #content div.product div.summary,
+    .woocommerce div.product div.summary {
+        width: 57% !important; /* Було 46% */
+        float: right !important;
+        margin-left: 3% !important; /* Це дасть ~1.5 см відступу */
+        clear: none !important;
+    }
+    
+    /* Вирівнювання контейнера під шапку */
+    .single-product .site-content > .ast-container {
+        max-width: 1280px; 
+        margin: 0 auto;
+    }
+}

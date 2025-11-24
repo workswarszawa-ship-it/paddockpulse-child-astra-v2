@@ -1,0 +1,120 @@
+/* =======================================================
+   PDP v1 — Paddock Pulse (single product)
+   Версия 1.2: scope по #pp-pdp-v1 + фикс галереи (без flex у wrapper)
+======================================================= */
+
+/* Контейнер PDP */
+#pp-pdp-v1 .product{
+  display:grid; grid-template-columns:1.1fr .9fr; gap:32px;
+  max-width:1320px; margin:0 auto; padding:16px 16px 24px;
+}
+@media (max-width:992px){
+  #pp-pdp-v1 .product{ grid-template-columns:1fr; gap:20px; padding:10px 12px 20px; }
+}
+
+/* ---------- Галерея WooCommerce: вертикальные превью ---------- */
+#pp-pdp-v1 .pp-left .woocommerce-product-gallery{
+  display:grid; grid-template-columns:86px 1fr; gap:12px; align-items:start; position:relative;
+}
+/* Явно кладём элементы по колонкам */
+#pp-pdp-v1 .pp-left .woocommerce-product-gallery .flex-control-nav.flex-control-thumbs{ grid-column:1; grid-row:1; }
+#pp-pdp-v1 .pp-left .woocommerce-product-gallery .flex-viewport{ grid-column:2; grid-row:1; }
+
+/* Мобилка: одна колонка */
+@media (max-width:576px){
+  #pp-pdp-v1 .pp-left .woocommerce-product-gallery{ grid-template-columns:1fr; }
+  #pp-pdp-v1 .pp-left .woocommerce-product-gallery .flex-viewport{ grid-column:1; grid-row:1; }
+  #pp-pdp-v1 .pp-left .woocommerce-product-gallery .flex-control-nav.flex-control-thumbs{
+    grid-column:1; grid-row:2; flex-direction:row; gap:8px; max-height:none; overflow:auto;
+  }
+}
+
+/* Лупа */
+#pp-pdp-v1 .pp-left .woocommerce-product-gallery .woocommerce-product-gallery__trigger{
+  position:absolute; left:8px; top:8px; z-index:2;
+  background:#fff; border:1px solid #e7eaf0; border-radius:50%; width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center; box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+
+/* Вьюпорт: держим высоту (главный фикс) */
+#pp-pdp-v1 .pp-left .woocommerce-product-gallery .flex-viewport{
+  height:560px; min-height:420px; border:1px solid #e7eaf0; border-radius:14px; background:#fff;
+  display:flex; align-items:center; justify-content:center;
+}
+@media (max-width:576px){
+  #pp-pdp-v1 .pp-left .woocommerce-product-gallery .flex-viewport{ height:420px; }
+}
+
+/* ВАЖНО: wrapper НЕ должен быть flex, этим управляет Flexslider */
+#pp-pdp-v1 .woocommerce-product-gallery__wrapper{ height:100%; } /* без display:flex! */
+
+/* Внутренние слайды и картинка */
+#pp-pdp-v1 .woocommerce-product-gallery__image,
+#pp-pdp-v1 .woocommerce-product-gallery__image a{
+  width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+}
+#pp-pdp-v1 .woocommerce-product-gallery__image img{ width:100%; height:100%; object-fit:contain; }
+
+/* Превью слева/снизу */
+#pp-pdp-v1 .flex-control-nav.flex-control-thumbs{
+  display:flex; flex-direction:column; gap:10px; max-height:560px; overflow:auto; padding-right:2px;
+}
+#pp-pdp-v1 .flex-control-nav.flex-control-thumbs li{ list-style:none!important; }
+#pp-pdp-v1 .flex-control-nav.flex-control-thumbs img{
+  width:100%; height:80px; object-fit:cover; background:#fff;
+  border:1px solid #e7eaf0; border-radius:10px; display:block;
+}
+@media(max-width:576px){
+  #pp-pdp-v1 .flex-control-nav.flex-control-thumbs img{ width:72px; height:72px; }
+}
+
+/* ---------- Заголовок / цена / бейджи / буллеты ---------- */
+#pp-pdp-v1 .pp-title{ font-size:32px; line-height:1.2; font-weight:800; margin:6px 0 8px; }
+@media(max-width:992px){ #pp-pdp-v1 .pp-title{ font-size:28px; } }
+#pp-pdp-v1 .summary .price{ font-size:28px; font-weight:800; margin:2px 0 8px; }
+
+#pp-pdp-v1 .pp-badges{ display:flex; gap:8px; flex-wrap:wrap; margin: 8px 0 2px; }
+#pp-pdp-v1 .pp-badge{ display:inline-flex; align-items:center; padding:6px 10px; border-radius:10px;
+  font-weight:700; font-size:12px; background:#f6f7fb; border:1px solid #e6e8ee; }
+#pp-pdp-v1 .pp-badge--instock{ background:#e8fbf0; border-color:#c7f0d7; color:#127a45; }
+#pp-pdp-v1 .pp-badge--oos{ background:#fff1f0; border-color:#ffd5d0; color:#a12617; }
+
+#pp-pdp-v1 .pp-trust-bullets{ margin:8px 0 10px 18px; color:#374151; }
+#pp-pdp-v1 .pp-trust-bullets li{ margin:4px 0; }
+
+/* Умные ссылки */
+#pp-pdp-v1 .pp-filter-links{ display:flex; flex-direction:column; gap:6px; margin: 6px 0 6px; }
+#pp-pdp-v1 .pp-filter-link a{ color:#0c63ce; text-decoration:none; }
+#pp-pdp-v1 .pp-filter-link a:hover{ text-decoration:underline; }
+
+/* Доверительные иконки */
+#pp-pdp-v1 .pp-trust-row{ display:flex; gap:14px; flex-wrap:wrap; margin:10px 0 0; }
+#pp-pdp-v1 .pp-trust-item{ padding:6px 10px; border:1px solid #e6e8ee; border-radius:10px; background:#fff; font-size:13px; color:#374151; }
+
+/* Qty + кнопки */
+#pp-pdp-v1 .pp-qty-wrap .quantity{ margin:0; }
+#pp-pdp-v1 .pp-btn-atc, 
+#pp-pdp-v1 .single_add_to_cart_button{
+  height:48px; border-radius:12px; background:#17c964; border:1px solid #12a957; color:#fff; font-weight:800; padding:0 18px;
+}
+
+/* Табы */
+#pp-pdp-v1 .woocommerce-tabs{ grid-column:1 / -1; }
+#pp-pdp-v1 .woocommerce-tabs .panel{ background:#fff; border:1px solid #e8eaf0; border-radius:14px; padding:18px; }
+
+/* Sticky Add-to-Cart */
+#pp-pdp-v1 .pp-sticky-atc{
+  position:fixed; left:0; right:0; bottom:0; z-index:9999;
+  background:#fff; border-top:1px solid #e9edf3; box-shadow:0 -6px 18px rgba(0,0,0,.06);
+  padding:10px 16px;
+}
+#pp-pdp-v1 .pp-sticky-inner{ max-width:1320px; margin:0 auto; display:flex; align-items:center; gap:14px; }
+#pp-pdp-v1 .pp-sticky-thumb{ width:40px; height:40px; object-fit:contain; background:#fff; border:1px solid #e9edf3; border-radius:8px; }
+#pp-pdp-v1 .pp-sticky-title{ font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:48vw; }
+#pp-pdp-v1 .pp-sticky-price{ margin-left:auto; font-weight:800; }
+#pp-pdp-v1 .pp-sticky-btn{ height:40px; border-radius:10px; padding:0 16px; background:#17c964; border:1px solid #12a957; color:#fff; font-weight:800; margin-left:12px; }
+@media(max-width:576px){ #pp-pdp-v1 .pp-sticky-title{ display:none; } }
+
+/* Чистка стандартных надписей Woo (у нас свои бейджи) */
+#pp-pdp-v1 .product .summary .stock{ display:none; }
+#pp-pdp-v1 .product .product_meta{ font-size:12px; color:#6b7280; }

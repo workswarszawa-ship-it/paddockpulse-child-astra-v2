@@ -1,0 +1,697 @@
+/* PaddockPulse — Cart & Wishlist modals */
+
+/* Блокируем фон */
+body.pp-lock{overflow:hidden}
+
+/* Оверлеи */
+#pp-cart-overlay,#pp-wl-overlay{
+  position:fixed; inset:0; z-index:2147483646 !important;
+  background:rgba(15,23,42,.52) !important;
+  backdrop-filter:saturate(120%) blur(2px) !important;
+}
+#pp-cart-overlay[hidden],#pp-wl-overlay[hidden]{display:none!important}
+
+/* Показ модалок, когда на <html> стоит метка */
+html.pp-open-cart  #pp-cart-modal,
+html.pp-open-wl    #pp-wl-modal{
+  position:fixed !important; inset:0 !important;
+  display:flex !important; align-items:center !important; justify-content:center !important;
+  visibility:visible !important; opacity:1 !important; z-index:2147483647 !important;
+}
+#pp-cart-modal[hidden],#pp-wl-modal[hidden]{display:none!important}
+
+/* Карточка */
+.pp-cart-modal__inner{
+  width:min(980px,92vw) !important;
+  max-height:calc(100vh - 96px) !important;
+  display:flex !important; flex-direction:column !important;
+  background:#fff !important; color:#0f172a !important;
+  border:2px solid #0f172a !important; border-radius:16px !important;
+  box-shadow:0 24px 64px rgba(0,0,0,.25) !important; overflow:hidden !important;
+  position:relative !important;
+}
+
+/* Шапка */
+.pp-cart-header{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:14px 18px 6px; background:#fff !important; color:#0f172a !important;
+  border-bottom:1px solid #e2e8f0;
+}
+.pp-cart-header h3{margin:0; font-size:18px; font-weight:700}
+
+/* Крестик */
+.pp-cart-close{
+  position:absolute; right:12px; top:10px;
+  width:34px; height:34px; min-width:34px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:10px; border:1px solid #cbd5e1 !important;
+  background:#fff !important; color:#0f172a !important; cursor:pointer;
+  padding:0 !important; line-height:1; box-shadow:none !important;
+}
+.pp-cart-close:hover{background:#f8fafc !important}
+
+/* Тело */
+.pp-cart-body{overflow:auto}
+.pp-cart-list{list-style:none; margin:0; padding:0}
+.ppc-row{align-items:center; padding:12px 10px; border-bottom:1px solid #eef2f7}
+.ppc-row:last-child{border-bottom:0}
+
+/* Сетки */
+.ppc-row--cart{display:grid; grid-template-columns:22px 56px 1fr 160px auto 38px; gap:12px}
+.ppc-row--wl  {display:grid; grid-template-columns:22px 56px 1fr auto 38px; gap:12px}
+
+/* Элементы строки */
+.ppc-thumb img{width:56px; height:56px; object-fit:contain; display:block; border-radius:8px; background:#fff}
+.ppc-title{font-weight:600; color:#0f172a; text-decoration:none}
+.ppc-price{white-space:nowrap; color:#0f172a; justify-self:end}
+
+/* Количество */
+.pp-qty{
+  justify-self:center; min-width:156px;
+  display:inline-flex; align-items:center; gap:6px;
+  border:1px solid #cbd5e1; border-radius:10px; padding:3px 6px; background:#fff;
+}
+.pp-qty button{
+  width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+  border:1px solid #cbd5e1; border-radius:8px; background:#f1f5f9; color:#0f172a;
+  font-weight:700; line-height:1; cursor:pointer;
+}
+.pp-qty button:hover{background:#e2e8f0}
+.pp-qty input{
+  width:48px; height:28px; text-align:center; border:0; outline:0;
+  font-weight:700; color:#0f172a; line-height:28px; background:#fff;
+}
+
+/* Кнопка удаления справа */
+.ppc-delete,.pp-wl-remove{
+  justify-self:end;
+  width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+  border:1px solid #cbd5e1; border-radius:10px; background:#fff; color:#0f172a; cursor:pointer;
+}
+.ppc-delete:hover,.pp-wl-remove:hover{background:#f8fafc}
+
+/* Подвал + кнопки */
+.pp-cart-footer{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding:12px 16px; border-top:1px solid #e2e8f0; background:#fff;
+}
+.pp-btn{
+  display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 14px;
+  border-radius:10px; border:1px solid #e5e7eb; background:#fff !important; color:#0f172a !important;
+  text-decoration:none; font-weight:700;
+}
+.pp-btn--light{background:#f8fafc !important}
+.pp-btn--ghost{background:#fff !important}
+.pp-btn--primary{background:#10b981 !important; color:#fff !important; border-color:#10b981 !important}
+
+/* Адаптив */
+@media (max-width:680px){
+  .pp-cart-modal__inner{width:min(520px,96vw) !important; border-radius:12px !important}
+  .ppc-row--cart{grid-template-columns:22px 54px 1fr; grid-auto-rows:auto}
+  .ppc-row--wl{grid-template-columns:22px 54px 1fr auto 38px}
+  .ppc-price{justify-self:start}
+}
+/* PP modal — принудительно поверх всего, даже если кто-то ставит visibility: hidden/opacity:0 */
+html.pp-open-cart #pp-cart-overlay,
+html.pp-open-wl   #pp-wl-overlay{
+  display:block !important; visibility:visible !important; opacity:1 !important;
+  z-index:2147483646 !important; background:rgba(15,23,42,.52) !important;
+  backdrop-filter:saturate(120%) blur(2px) !important;
+}
+
+html.pp-open-cart #pp-cart-modal,
+html.pp-open-wl   #pp-wl-modal{
+  position:fixed !important; inset:0 !important; display:flex !important;
+  align-items:center !important; justify-content:center !important;
+  visibility:visible !important; opacity:1 !important; z-index:2147483647 !important;
+}
+
+/* показывать модалку даже если на ней остался [hidden] */
+html.pp-open-cart #pp-cart-modal[hidden],
+html.pp-open-wl   #pp-wl-modal[hidden]{ display:flex !important; }
+
+#pp-cart-modal .pp-cart-modal__inner,
+#pp-wl-modal  .pp-cart-modal__inner{
+  display:flex !important; flex-direction:column !important;
+  width:min(980px,92vw) !important; max-height:calc(100vh - 96px) !important;
+  background:#fff !important; border:2px solid #0f172a !important; border-radius:16px !important;
+  box-shadow:0 24px 64px rgba(0,0,0,.25) !important; overflow:hidden !important;
+  opacity:1 !important; visibility:visible !important; transform:none !important;
+}
+/* ===== Wishlist / Cart modal — cosmetics ===== */
+
+/* Заголовок WL: сердечко + "Обране" в одну линию */
+#pp-wl-modal .pp-cart-header > div{
+  display:flex; align-items:center; gap:8px;
+}
+#pp-wl-modal .ppc-master{ margin-left:auto; }
+
+/* Аккуратный крестик уже есть, но на всякий случай */
+#pp-cart-modal .pp-cart-close,
+#pp-wl-modal  .pp-cart-close{
+  position:absolute; right:12px; top:10px;
+  width:34px; height:34px; border-radius:10px;
+  background:#fff; border:1px solid #cbd5e1; color:#0f172a;
+  display:flex; align-items:center; justify-content:center;
+}
+#pp-cart-modal .pp-cart-close:hover,
+#pp-wl-modal  .pp-cart-close:hover{ background:#f8fafc; }
+
+/* ====== CART =================================================== */
+/* корзинка справа от цены на одной линии */
+#pp-cart-modal .ppc-row--cart{
+  display:grid;
+  grid-template-columns:24px 56px minmax(0,1fr) 170px auto 40px; /* delete = последняя колонка */
+  gap:12px; align-items:center;
+}
+#pp-cart-modal .ppc-price{ justify-self:end; }
+#pp-cart-modal .ppc-delete{
+  justify-self:end; width:36px; height:36px;
+  border:1px solid #e5e7eb; border-radius:10px; background:#fff; color:#0f172a;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+#pp-cart-modal .ppc-delete:hover{ background:#f8fafc; }
+
+/* ====== WISHLIST =============================================== */
+/* сетка: чекбокс | превью | название | QTY | цена | удалить  */
+#pp-wl-modal .ppc-row--wl{
+  display:grid;
+  grid-template-columns:24px 56px minmax(0,1fr) 170px 160px 40px;
+  gap:12px; align-items:center;
+}
+
+/* количество в WL (как в корзине) */
+#pp-wl-modal .pp-wl-qty{
+  justify-self:center; min-width:156px;
+  display:inline-flex; align-items:center; gap:6px;
+  border:1px solid #cbd5e1; border-radius:10px;
+  padding:3px 6px; background:#fff;
+}
+#pp-wl-modal .pp-wl-qty button{
+  width:28px; height:28px; border:1px solid #cbd5e1;
+  border-radius:8px; background:#f1f5f9; font-weight:700; color:#0f172a;
+}
+#pp-wl-modal .pp-wl-qty button:hover{ background:#e2e8f0; }
+#pp-wl-modal .pp-wl-qty input{
+  width:48px; height:28px; text-align:center; border:0; outline:0; font-weight:700; color:#0f172a;
+}
+
+/* цена и «корзинка» удаления справа */
+#pp-wl-modal .ppc-price{ justify-self:end; white-space:nowrap; color:#0f172a; }
+#pp-wl-modal .pp-wl-remove{
+  justify-self:end; width:36px; height:36px;
+  border:1px solid #e5e7eb; border-radius:10px; background:#fff; color:#0f172a;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+#pp-wl-modal .pp-wl-remove:hover{ background:#f8fafc; }
+/* ===== PP modals — cosmetics ===== */
+
+/* Хедер: сердечко + заголовок слева; чекбокс и крестик справа */
+.pp-cart-header{
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px; border-bottom:1px solid #eef2f7; background:#fff;
+}
+.pp-cart-header > div{ display:flex; align-items:center; gap:8px; font-weight:700; color:#0f172a; }
+.ppc-master{ margin-left:auto; display:inline-flex; align-items:center; gap:8px; color:#0f172a; }
+
+/* Крестик – маленький, белый, с окантовкой */
+.pp-cart-close{
+  position:absolute; top:10px; right:12px;
+  width:32px; height:32px; border-radius:10px;
+  border:1px solid #e5e7eb; background:#fff;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  color:#0f172a; line-height:1;
+}
+.pp-cart-close:hover{ background:#f8fafc; }
+
+/* Строки товаров — одинаковая сетка для корзины и избранного:
+   [checkbox][thumb][title][qty][price][trash] */
+.pp-cart-list .ppc-row{
+  display:grid; align-items:center; gap:12px;
+  padding:12px 14px; border-bottom:1px solid #eef2f7;
+}
+.pp-cart-list .ppc-row:last-child{ border-bottom:0; }
+
+.ppc-row--cart{ grid-template-columns:22px 56px minmax(0,1fr) 170px 140px 38px; }
+.ppc-row--wl  { grid-template-columns:22px 56px minmax(0,1fr) 170px 140px 38px; }
+
+/* Превью и заголовки */
+.ppc-thumb img{ width:56px; height:56px; object-fit:contain; display:block; border-radius:8px; background:#fff; }
+.ppc-title{ font-weight:600; color:#0f172a; text-decoration:none; }
+
+/* Кол-во – всегда видно и по центру своей колонки */
+.pp-qty, .pp-wl-qty{
+  justify-self:center;
+  min-width:156px; display:inline-flex; align-items:center; gap:6px;
+  border:1px solid #cbd5e1; border-radius:10px; padding:3px 6px; background:#fff;
+}
+.pp-qty button, .pp-wl-qty button{
+  width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+  border:1px solid #cbd5e1; border-radius:8px; background:#f1f5f9;
+  color:#0f172a; font-weight:700; line-height:1; cursor:pointer;
+}
+.pp-qty button:hover, .pp-wl-qty button:hover{ background:#e2e8f0; }
+.pp-qty input, .pp-wl-qty input{
+  width:48px; height:28px; text-align:center; border:0; outline:0; background:#fff; color:#0f172a; font-weight:700;
+}
+
+/* Цена + корзинка справа */
+.ppc-price{ white-space:nowrap; justify-self:end; color:#0f172a; }
+.ppc-delete, .pp-wl-remove{
+  width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+  border:1px solid #e5e7eb; border-radius:10px; background:#fff; color:#0f172a; cursor:pointer;
+}
+.ppc-delete:hover, .pp-wl-remove:hover{ background:#f8fafc; }
+
+/* Мелкая адаптация */
+@media (max-width:680px){
+  .ppc-row--cart, .ppc-row--wl{ grid-template-columns:22px 54px 1fr; grid-auto-rows:auto; }
+  .ppc-price{ justify-self:start; }
+}
+/* === PP modals – header spacing (WL/Cart) === */
+#pp-wl-modal .pp-cart-header,
+#pp-cart-modal .pp-cart-header{
+  position: relative;
+  padding-right: 56px; /* место под крестик */
+}
+#pp-wl-modal .ppc-master,
+#pp-cart-modal .ppc-master{ margin-left: auto; }
+#pp-wl-modal .pp-cart-close,
+#pp-cart-modal .pp-cart-close{
+  position: absolute; right: 12px; top: 10px;
+  width: 34px; height: 34px; border: 1px solid #cbd5e1; border-radius: 10px;
+  background: #fff; display: flex; align-items: center; justify-content: center;
+}
+
+/* === PP modals – строка товара: [□][thumb][title][qty][price][trash] === */
+#pp-cart-modal .pp-cart-list .ppc-row,
+#pp-wl-modal   .pp-cart-list .ppc-row{
+  display: grid;
+  grid-template-columns: 22px 56px minmax(0,1fr) 170px 160px 40px;
+  gap: 12px; align-items: center;
+}
+
+/* Qty — запас под двузначные */
+#pp-cart-modal .pp-qty input,
+#pp-wl-modal  .pp-wl-qty input{ width: 56px; }
+
+/* Цена — справа, фикс. ширина, чтобы не наезжала */
+#pp-cart-modal .ppc-price,
+#pp-wl-modal  .ppc-price{
+  justify-self: end; white-space: nowrap; min-width: 160px;
+}
+
+/* В ячейке цены (Избранное) прячем «посторонних» гостей темы */
+#pp-wl-modal .ppc-price input,
+#pp-wl-modal .ppc-price .quantity,
+#pp-wl-modal .ppc-price .qty,
+#pp-wl-modal .ppc-price .button,
+#pp-wl-modal .ppc-price .add_to_cart_button,
+#pp-wl-modal .ppc-price .yith-wcwl-add-to-cart{ display: none !important; }
+
+/* Кнопки-корзинки справа */
+#pp-cart-modal .ppc-delete,
+#pp-wl-modal  .pp-wl-remove{
+  justify-self: end;
+  width: 36px; height: 36px; border: 1px solid #cbd5e1; border-radius: 10px;
+  background: #fff; color: #0f172a; display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+#pp-cart-modal .ppc-delete:hover,
+#pp-wl-modal  .pp-wl-remove:hover{ background: #f8fafc; }
+
+/* Небольшой mobile-фоллбек */
+@media (max-width: 680px){
+  #pp-cart-modal .pp-cart-list .ppc-row,
+  #pp-wl-modal   .pp-cart-list .ppc-row{
+    grid-template-columns: 22px 54px 1fr; grid-auto-rows: auto;
+  }
+  #pp-cart-modal .ppc-price,
+  #pp-wl-modal  .ppc-price{ justify-self: start; }
+}
+/* шапка модалки: место под крестик + поверх белых полос */
+#pp-cart-modal .pp-cart-header,
+#pp-wl-modal   .pp-cart-header{ position:relative; padding-right:56px; z-index:2; }
+#pp-cart-modal .pp-cart-close,
+#pp-wl-modal   .pp-cart-close{ position:absolute; right:12px; top:10px; z-index:5; }
+/* === PP modals — header: место под крестик, чтобы не перекрывался === */
+#pp-cart-modal .pp-cart-header,
+#pp-wl-modal  .pp-cart-header{ position:relative; padding-right:56px; }
+#pp-cart-modal .pp-cart-close,
+#pp-wl-modal  .pp-cart-close{
+  position:absolute; right:12px; top:10px; z-index:3;
+  width:34px; height:34px; border:1px solid #cbd5e1; border-radius:10px;
+  background:#fff; display:flex; align-items:center; justify-content:center;
+}
+
+/* === Строка товара: [□][thumb][title][qty][price][trash] — корзина и избранное === */
+#pp-cart-modal .pp-cart-list .ppc-row,
+#pp-wl-modal   .pp-cart-list .ppc-row{
+  display:grid; align-items:center; gap:12px;
+  grid-template-columns: 22px 56px minmax(0,1fr) 170px 160px 40px;
+}
+
+/* Кол-во — запас под 2–3 знака */
+#pp-cart-modal .pp-qty input,
+#pp-wl-modal  .pp-wl-qty input{ width:56px; }
+
+/* Цена — фикс. ширина и справа, чтобы ничего не наезжало */
+#pp-cart-modal .ppc-price,
+#pp-wl-modal  .ppc-price{ justify-self:end; min-width:160px; white-space:nowrap; }
+
+/* В блоке цены избранного прячем "посторонние" элементы темы */
+#pp-wl-modal .ppc-price input,
+#pp-wl-modal .ppc-price .quantity,
+#pp-wl-modal .ppc-price .qty,
+#pp-wl-modal .ppc-price .button,
+#pp-wl-modal .ppc-price .add_to_cart_button,
+#pp-wl-modal .ppc-price .yith-wcwl-add-to-cart{ display:none !important; }
+
+/* Иконки удаления справа на одной линии */
+#pp-cart-modal .ppc-delete,
+#pp-wl-modal  .pp-wl-remove{
+  justify-self:end; width:36px; height:36px;
+  border:1px solid #cbd5e1; border-radius:10px; background:#fff;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+#pp-cart-modal .ppc-delete:hover,
+#pp-wl-modal  .pp-wl-remove:hover{ background:#f8fafc; }
+
+/* Адаптив — три колонки, цена слева */
+@media (max-width:680px){
+  #pp-cart-modal .pp-cart-list .ppc-row,
+  #pp-wl-modal   .pp-cart-list .ppc-row{
+    grid-template-columns:22px 54px 1fr; grid-auto-rows:auto;
+  }
+  #pp-cart-modal .ppc-price, #pp-wl-modal .ppc-price{ justify-self:start; }
+}
+/* === Header: место под крестик и сам крестик виден поверх === */
+#pp-cart-modal .pp-cart-header,
+#pp-wl-modal  .pp-cart-header{
+  position: relative;
+  padding-right: 56px; /* запас для крестика */
+}
+#pp-cart-modal .pp-cart-close,
+#pp-wl-modal  .pp-cart-close{
+  position: absolute; right: 12px; top: 10px;
+  width: 34px; height: 34px; border-radius: 10px;
+  border: 1px solid #cbd5e1; background:#fff; color:#0f172a;
+  display:flex; align-items:center; justify-content:center;
+  z-index: 3;
+}
+
+/* === Строка корзины: [□][thumb][title][qty][price][trash] — trash справа в ОДНОЙ линии === */
+#pp-cart-modal .pp-cart-list .ppc-row{
+  display:grid !important;
+  grid-template-columns: 22px 56px minmax(0,1fr) 170px minmax(140px,auto) 40px !important;
+  gap:12px; align-items:center;
+}
+#pp-cart-modal .ppc-price{ justify-self:end; white-space:nowrap; }
+#pp-cart-modal .ppc-delete{ justify-self:end; width:36px; height:36px; }
+
+/* === Строка избранного — сетка и цена не наезжает === */
+#pp-wl-modal .pp-cart-list .ppc-row{
+  display:grid !important;
+  grid-template-columns: 22px 56px minmax(0,1fr) 170px 160px 40px !important;
+  gap:12px; align-items:center;
+}
+#pp-wl-modal .ppc-price{
+  justify-self:end; white-space:nowrap; min-width:160px;
+}
+/* Глушим «гостей» темы внутри ячейки цены WL (чтобы не появлялись чужие инпуты/кнопки) */
+#pp-wl-modal .ppc-price input,
+#pp-wl-modal .ppc-price .quantity,
+#pp-wl-modal .ppc-price .qty,
+#pp-wl-modal .ppc-price .button,
+#pp-wl-modal .ppc-price .add_to_cart_button,
+#pp-wl-modal .ppc-price .yith-wcwl-add-to-cart{ display:none !important; }
+
+/* Qty — небольшой запас под двузначные значения */
+#pp-cart-modal .pp-qty input,
+#pp-wl-modal  .pp-wl-qty input{ width:56px; }
+
+/* Mobile фоллбек (узкие экраны) */
+@media (max-width:680px){
+  #pp-cart-modal .pp-cart-list .ppc-row,
+  #pp-wl-modal   .pp-cart-list .ppc-row{
+    grid-template-columns: 22px 54px 1fr !important;
+    grid-auto-rows:auto;
+  }
+  #pp-cart-modal .ppc-price,
+  #pp-wl-modal  .ppc-price{ justify-self:start; }
+}
+/* CART: небольшой зазор между количеством и ценой */
+#pp-cart-modal .ppc-row--cart .pp-qty { margin-right: 10px; }
+#pp-cart-modal .ppc-row--cart .ppc-price { padding-left: 12px; }
+
+/* Крестик всегда поверх и не перекрывается */
+#pp-cart-modal .pp-cart-close,
+#pp-wl-modal  .pp-cart-close { z-index: 3; }
+
+/* WISHLIST: прибираем "посторонние" элементы темы из ячейки цены */
+#pp-wl-modal .ppc-price input,
+#pp-wl-modal .ppc-price .quantity,
+#pp-wl-modal .ppc-price .qty,
+#pp-wl-modal .ppc-price .button,
+#pp-wl-modal .ppc-price .add_to_cart_button,
+#pp-wl-modal .ppc-price .yith-wcwl-add-to-cart,
+#pp-wl-modal .ppc-price form,
+#pp-wl-modal .ppc-price .added_to_cart,
+#pp-wl-modal .ppc-price a[class*="add"],
+#pp-wl-modal .ppc-price .ajax_add_to_cart { display:none !important; }
+
+/* Вставленные SVG точно видны */
+#pp-wl-modal .pp-wl-remove svg,
+#pp-cart-modal .ppc-delete svg { display:block; width:18px; height:18px; }
+
+/* Состояние удаления строки */
+.ppc-row.pp-removing { opacity:.45; pointer-events:none; }
+/* ——— Cart: чуть-чуть воздуха слева от цены ——— */
+#pp-cart-modal .ppc-price { padding-left: 10px; }
+
+/* ——— Wishlist: гарантируем иконку корзины и скрываем "посторонних гостей" темы внутри ячейки цены ——— */
+#pp-wl-modal .pp-wl-remove svg { display:block; width:18px; height:18px; pointer-events:none; }
+#pp-wl-modal .ppc-price input,
+#pp-wl-modal .ppc-price .quantity,
+#pp-wl-modal .ppc-price .qty,
+#pp-wl-modal .ppc-price .button,
+#pp-wl-modal .ppc-price .add_to_cart_button,
+#pp-wl-modal .ppc-price .yith-wcwl-add-to-cart { display:none !important; }
+
+/* если тема вдруг задаёт text-indent у кнопок удаления — возвращаем нормальный поток */
+#pp-wl-modal .pp-wl-remove { text-indent: 0 !important; overflow: visible !important; }
+
+/* на всякий: ячейка цены справа, фикс. ширина, чтобы ничего не наползало */
+#pp-wl-modal .ppc-price { justify-self: end; white-space: nowrap; min-width: 160px; }
+
+/* крестик в шапке точно поверх и не перекрывается */
+#pp-cart-modal .pp-cart-header,
+#pp-wl-modal  .pp-cart-header { position: relative; padding-right: 56px; }
+#pp-cart-modal .pp-cart-close,
+#pp-wl-modal  .pp-cart-close {
+  position: absolute; right: 12px; top: 10px;
+  width: 34px; height: 34px; border: 1px solid #cbd5e1; border-radius: 10px;
+  background: #fff; display: flex; align-items: center; justify-content: center;
+}
+/* — Cart — чуть-чуть воздуха между qty и ценой */
+#pp-cart-modal .ppc-row--cart .pp-qty { margin-right: 10px; }
+#pp-cart-modal .ppc-row--cart .ppc-price { padding-left: 6px; }
+
+/* — Wishlist — прячем «кнопки/инпуты» из price_html плагина, оставляем только цену */
+#pp-wl-modal .ppc-price .add_to_cart_button,
+#pp-wl-modal .ppc-price .button,
+#pp-wl-modal .ppc-price .yith-wcwl-add-to-cart,
+#pp-wl-modal .ppc-price input,
+#pp-wl-modal .ppc-price .qty,
+#pp-wl-modal .ppc-price .quantity,
+#pp-wl-modal .ppc-price form { display:none !important; }
+
+/* Иконки корзины в избранном — гарантировано видны */
+#pp-wl-modal .pp-wl-remove{
+  display:flex; align-items:center; justify-content:center;
+  width:36px; height:36px; border:1px solid #cbd5e1; border-radius:10px;
+  background:#fff; color:#0f172a;
+}
+#pp-wl-modal .pp-wl-remove:hover{ background:#f8fafc; }
+/* === Cart modal: аккуратная ширина и симметрия селектора количества === */
+#pp-cart-modal .ppc-row--cart{
+  grid-template-columns: 22px 56px minmax(0,1fr) 184px minmax(120px,auto) 40px;
+  column-gap: 14px;
+}
+#pp-cart-modal .pp-qty{
+  min-width: 184px;
+  padding: 3px 8px;            /* больше воздуха */
+  justify-content: space-between;
+}
+#pp-cart-modal .pp-qty input{ width: 56px; }
+#pp-cart-modal .ppc-price{ padding-left: 10px; } /* цена не прилипает к селектору */
+
+/* === Wishlist modal: гарантируем видимость иконки корзины и убираем лишние элементы темы в колонке цены === */
+#pp-wl-modal .pp-wl-remove{
+  display: inline-flex; align-items: center; justify-content: center;
+}
+#pp-wl-modal .pp-wl-remove svg{
+  width: 18px; height: 18px; display: block;
+}
+
+/* В колонке цены в WL прячем «чужие» контролы темы/плагина (qty/add-to-cart), оставляем только цену */
+#pp-wl-modal .ppc-price .quantity,
+#pp-wl-modal .ppc-price .qty,
+#pp-wl-modal .ppc-price input[type=number],
+#pp-wl-modal .ppc-price .button,
+#pp-wl-modal .ppc-price .add_to_cart_button,
+#pp-wl-modal .ppc-price .single_add_to_cart_button,
+#pp-wl-modal .ppc-price .yith-wcwl-add-to-cart,
+#pp-wl-modal .ppc-price form{ display: none !important; }
+/* ——— Cart cosmetics ——— */
+#pp-cart-modal .ppc-row { align-items: center; }
+#pp-cart-modal .pp-qty{
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:6px; min-width:120px;
+}
+#pp-cart-modal .pp-qty button{ width:32px; height:32px; line-height:30px; }
+#pp-cart-modal .pp-qty .pp-q{ width:44px; text-align:center; }
+#pp-cart-modal .ppc-price{ padding-left:16px; white-space:nowrap; }
+
+/* ——— Wishlist: иконка корзины и выравнивание ——— */
+#pp-wl-modal .pp-wl-remove{
+  width:40px; height:36px; display:flex; align-items:center; justify-content:center;
+}
+#pp-wl-modal .pp-wl-remove svg{ width:18px; height:18px; display:block; }
+#pp-wl-modal .ppc-price{ white-space:nowrap; }
+/* ---------- Общая сетка строк модалок ---------- */
+#pp-cart-modal .ppc-row,
+#pp-wl-modal .ppc-row{
+  display: grid;
+  grid-template-columns: 22px 56px 1fr auto auto auto;
+  align-items: center;
+  column-gap: 12px;
+}
+
+/* миниатюра */
+#pp-cart-modal .ppc-thumb, #pp-wl-modal .ppc-thumb { width:56px; display:block; }
+#pp-cart-modal .ppc-thumb img, #pp-wl-modal .ppc-thumb img { width:56px; height:auto; display:block; }
+
+/* заголовок */
+#pp-cart-modal .ppc-title, #pp-wl-modal .ppc-title { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* селекторы количества — одинаковая ширина и ритм */
+#pp-cart-modal .pp-qty,
+#pp-wl-modal .pp-wl-qty{
+  display:inline-flex; align-items:center; gap:6px;
+  background:#f6f7f8; border-radius:8px; padding:2px 6px;
+}
+#pp-cart-modal .pp-qty input,
+#pp-wl-modal .pp-wl-q{
+  width:36px; text-align:center;
+}
+#pp-cart-modal .pp-qty button,
+#pp-wl-modal .pp-wl-qty button{
+  width:28px; height:28px; line-height:26px;
+}
+
+/* цена — не прилипает, всегда с небольшим «карманом» справа */
+#pp-cart-modal .ppc-price,
+#pp-wl-modal .ppc-price{
+  min-width:120px; text-align:right; padding:0 8px;
+}
+
+/* кнопки удаления в строке — гарантируем видимость иконки */
+#pp-cart-modal .ppc-delete,
+#pp-wl-modal .pp-wl-remove{
+  width:40px; height:32px;
+  display:inline-flex; align-items:center; justify-content:center;
+  border:1px solid #e5e7eb; border-radius:8px; background:#fff; color:#1f2937;
+}
+#pp-cart-modal .ppc-delete svg,
+#pp-wl-modal .pp-wl-remove svg{ width:18px; height:18px; }
+
+/* «итого/кнопки» — немного воздуха сверху */
+#pp-cart-modal .pp-cart-footer,
+#pp-wl-modal .pp-cart-footer{ margin-top:10px; }
+
+/* мелкие косметические штрихи */
+#pp-cart-modal .ppc-row--cart .ppc-price { margin-left: 4px; }
+/* PP – лёгкая косметика строк в модалках */
+#pp-cart-modal .ppc-row,
+#pp-wl-modal  .ppc-row{ align-items:center; }
+#pp-cart-modal .pp-qty,
+#pp-wl-modal  .pp-wl-qty{ display:inline-flex; gap:6px; align-items:center; }
+#pp-cart-modal .pp-qty .pp-q,
+#pp-wl-modal  .pp-wl-qty .pp-wl-q{ width:44px; text-align:center; }
+#pp-cart-modal .ppc-price,
+#pp-wl-modal  .ppc-price{ min-width:120px; text-align:right; padding-left:12px; }
+/* PaddockPulse — cart cosmetics */
+#pp-cart-modal .ppc-row { align-items: center; }
+#pp-cart-modal .pp-qty{ min-width: 130px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+#pp-cart-modal .pp-qty .pp-q{ width: 48px; text-align:center; }
+#pp-cart-modal .ppc-price{ margin-left: 14px; white-space: nowrap; }
+#pp-cart-modal .ppc-delete{ margin-left: 12px; }
+
+/* Единый вид кнопки-«корзины» */
+#pp-cart-modal .ppc-delete,
+#pp-wl-modal .pp-wl-remove{
+  width:36px;height:36px;border-radius:10px;border:1px solid #e7e9ec;
+  display:inline-flex;align-items:center;justify-content:center; background:#fff;
+}
+#pp-cart-modal .ppc-delete:hover,
+#pp-wl-modal .pp-wl-remove:hover{ background:#f6f7f9; }
+/* Кнопки +/- и поле количества — ровная сетка и нормальная ширина цифр */
+#pp-cart-modal .pp-qty,
+#pp-wl-modal .pp-wl-qty{
+  display:inline-flex; align-items:center; gap:8px;
+}
+#pp-cart-modal .pp-qty .pp-q,
+#pp-wl-modal .pp-wl-qty .pp-wl-q{
+  width: 3.6rem; min-width: 3.6rem; text-align:center;
+  padding: 6px 8px; line-height: 1; border-radius:8px;
+}
+#pp-cart-modal .pp-qty button,
+#pp-wl-modal .pp-wl-qty button{
+  width: 36px; min-width:36px; height: 32px;
+}
+/* Колонки и отступы в строках модалок */
+.pp-cart-list .ppc-row,
+#pp-wl-list .ppc-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* Блок количества — фиксированная ширина, чтобы цены не наезжали */
+.pp-qty, .pp-wl-qty{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width: 124px;           /* было мало — обрезались двузначные */
+  justify-content:center;
+}
+
+/* Само поле количества — с запасом под 3 знака */
+.pp-q, .pp-wl-q{
+  width: 3.6ch;               /* 3-4 символа уверенно помещаются */
+  text-align:center;
+  padding:4px 6px;
+  line-height:1.25;
+}
+
+/* Цена уходит вправо и не прилипает */
+.ppc-price{
+  margin-left:auto;
+  padding-left:12px;
+  white-space:nowrap;
+}
+
+/* Кнопки удаления в строках */
+.ppc-delete, .pp-wl-remove{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:34px; height:34px;
+  border-radius:8px;
+  border:1px solid var(--pp-border,#e5e7eb);
+  background:#fff;
+}
+
+/* Небольшой визуальный отклик при удалении */
+.pp-is-removing{ opacity:.55 !important; }
